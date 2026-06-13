@@ -1,0 +1,11 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="EasyTest" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Project Path="XafEasyTestAI/XafEasyTestAI.Blazor.Server/XafEasyTestAI.Blazor.Server.csproj" />
+  <Project Path="XafEasyTestAI/XafEasyTestAI.E2E.Tests/XafEasyTestAI.E2E.Tests.csproj" />
+  <Project Path="XafEasyTestAI/XafEasyTestAI.Module/XafEasyTestAI.Module.csproj" />
+  <Project Path="XafEasyTestAI/XafEasyTestAI.Win/XafEasyTestAI.Win.csproj" />
+</Solution>

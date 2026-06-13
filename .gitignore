@@ -1,0 +1,31 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Dd]ebug/
+[Rr]elease/
+[Ee]asy[Tt]est/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Test results & logs
+[Tt]est[Rr]esults/
+*.trx
+run.log
+excalidraw.log
+*.received.*
+
+# EasyTest browser driver (machine/Edge-version specific — download locally, see the folder's README)
+# Keep only the README; ignore the driver binary, its notes, and any downloaded zip.
+/XafEasyTestAI/tools/webdriver/*
+!/XafEasyTestAI/tools/webdriver/README.md
+
+# OS
+Thumbs.db
+.DS_Store
