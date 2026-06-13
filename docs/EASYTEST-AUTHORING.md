@@ -84,6 +84,12 @@ A `BlazorApplicationOptions` can also set `runHeadless: true` for CI (a driver i
 
 The whole point: **derive the test from the code, don't guess.** Two sources.
 
+> **Verify DevExpress assumptions through the dxdocs MCP server** (`devexpress_docs_search` /
+> `devexpress_docs_get_content`) before relying on any EasyTest API, attribute, or XAF behavior.
+> Every API and gotcha in this playbook was confirmed against dxdocs for 25.2 — do the same for
+> anything new (method signatures, validation/edit-mode behavior, platform differences). If dxdocs
+> has no answer, say so and label it an unverified assumption rather than guessing.
+
 ### 4a. From entities → captions, columns, nav items
 
 For each business object you want to test, read its class in `XafEasyTestAI.Module/BusinessObjects/`:
@@ -250,10 +256,13 @@ tests carry both `[InlineData(WinAppName)]` and `[InlineData(BlazorAppName)]`. 9
    lookup display values (§4a). Don't guess captions; humanize or read `[DisplayName]`/`[DefaultProperty]`.
 3. **Read any ViewController** in play → action captions + enable/visibility guards to assert (§4b).
 4. **Check the seed** (`Updater.SeedSampleData`) for rows you can rely on, or create what you need.
-5. **Write the test** from the skeleton (§5) using the API cheat-sheet (§6); apply the gotchas (§7).
-6. **Build `-c EasyTest`, run with a `--filter`**, iterate. On failure, read the EasyTest exception —
+5. **Verify any DevExpress assumption via the dxdocs MCP** (`devexpress_docs_search` /
+   `devexpress_docs_get_content`) — EasyTest method signatures, validation/edit-mode behavior, attribute
+   constructors, platform differences. Don't rely on memory for DX APIs.
+6. **Write the test** from the skeleton (§5) using the API cheat-sheet (§6); apply the gotchas (§7).
+7. **Build `-c EasyTest`, run with a `--filter`**, iterate. On failure, read the EasyTest exception —
    it names the control/field/format precisely (that's how every gotcha above was found).
-7. If a flow needs UI config that doesn't exist yet (e.g. an editable grid), prefer a **code attribute**
+8. If a flow needs UI config that doesn't exist yet (e.g. an editable grid), prefer a **code attribute**
    (`[DefaultListViewOptions]`) over hand-editing `.xafml`.
 
 ---
