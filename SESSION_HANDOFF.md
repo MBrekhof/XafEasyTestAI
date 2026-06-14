@@ -1,6 +1,23 @@
 # Session Handoff
 
-_Last updated: 2026-06-13_
+_Last updated: 2026-06-14_
+
+## Last session (2026-06-14) — docs + skill extraction
+
+- **Playbook (`docs/EASYTEST-AUTHORING.md`) de-staled:** dropped "WinForms-only / POC targets Win
+  only" framing — both hosts are targeted and green (9 cases, 5 Win + 4 Blazor). Fixed "three
+  reference tests" → 5 tests / 9 cases. Added a `[InlineData(BlazorAppName)]` cross-platform hint to
+  the §5 skeleton.
+- **README:** the playbook pointer now tells readers to share it with their AI agent.
+- Both committed + pushed to `main` (`af9eaeb`).
+- **TODO:** added the rationale for extracting a global `xaf-easytest-authoring` skill (generic
+  method + API + gotchas belong XAF-wide, not in this repo).
+- **Started that skill in the `xafskills` repo** (separate repo, `github.com/MBrekhof/xafskills`):
+  wrote `skills/xaf-easytest-authoring/SKILL.md` + bumped the README index to 12 skills.
+  **Uncommitted — to be reviewed/pushed in a dedicated `xafskills` session.** It won't trigger until
+  pushed (the active copy is the plugin cache, which auto-updates from the pushed commit).
+
+
 
 ## What this project is
 
