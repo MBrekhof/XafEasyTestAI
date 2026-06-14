@@ -1,11 +1,14 @@
 # Authoring EasyTest Functional Tests (AI Playbook)
 
-How to write EasyTest functional tests for this XAF solution — primarily for the **WinForms** host,
-which has no other practical automated-UI testing path. Written so a future AI session (or human) can
-generate correct tests from the **entities** and **ViewController logic** in the codebase.
+How to write EasyTest functional tests for this XAF solution, covering **both** the WinForms and
+Blazor hosts from a single test body. EasyTest is especially valuable for WinForms (which has no
+other practical automated-UI path), but the same tests drive Blazor too. Written so a future AI
+session (or human) can generate correct tests from the **entities** and **ViewController logic** in
+the codebase.
 
-This is a working playbook: every gotcha below was hit and solved while building the three reference
-tests in `XafEasyTestAI.E2E.Tests/Tests.cs`. Start there for live examples.
+This is a working playbook: every gotcha below was hit and solved while building the reference
+tests in `XafEasyTestAI.E2E.Tests/Tests.cs` (5 tests, 9 cases across both hosts). Start there for
+live examples.
 
 ---
 
@@ -18,7 +21,10 @@ pixel or automation-id. That is exactly why it pairs well with an AI author: the
 not guessed.
 
 One test body runs both Win and Blazor (`[InlineData(WinAppName)]` / `[InlineData(BlazorAppName)]`).
-This POC targets **Win** only; Blazor parity is a later step (needs a browser driver + its own DB catalog).
+Both hosts are targeted and green — **9 cases pass (5 Win, 4 Blazor)**. Only `OrderWithLines` is
+Win-only so far, because nested-grid inline editing differs per platform (see §7.10); a Blazor
+variant needs its own line-entry steps. Blazor requires a version-matched browser driver and uses
+its own DB catalog (§2–§3).
 
 ---
 
@@ -140,6 +146,7 @@ Copy this shape. The `StartSeededApp` helper (in `Tests.cs`) does drop-DB → la
 ```csharp
 [Theory]
 [InlineData(WinAppName)]
+// [InlineData(BlazorAppName)]   // add when the flow is cross-platform (see §7.10)
 public void MyFlow(string applicationName)
 {
     var app = StartSeededApp(applicationName);   // fresh seeded DB + logged in as Admin

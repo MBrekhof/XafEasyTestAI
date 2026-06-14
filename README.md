@@ -11,7 +11,7 @@ for both the **WinForms** and **Blazor** hosts.
 
 📖 **The real deliverable is the playbook:** [`docs/EASYTEST-AUTHORING.md`](docs/EASYTEST-AUTHORING.md) —
 how to derive a test from an entity or a controller, the EasyTest API cheat-sheet, and every gotcha hit
-while building the suite.
+while building the suite. Read this document yourself, and make sure your AI agent sees/reads it too.
 
 ## What's in here
 
