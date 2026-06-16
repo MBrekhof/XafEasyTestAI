@@ -14,6 +14,16 @@ subagent-driven-development.
 - **Design:** `docs/plans/2026-06-16-easytest-manual-generator-design.md`
 - **Plan:** `docs/plans/2026-06-16-easytest-manual-generator.md` (5 tasks).
 
+**✅ DONE this session (2026-06-16, all committed on `CreatingManual`):** Tasks 3–5 complete. The
+three walkthroughs (`CustomerManagement`, `MarkingOrdersShipped`, `CompletingProjects`) run green via
+`dotnet test --filter "kind=manual"` and emit `docs/manual/{customer-management,orders,projects}.md`
++ `img/*.png` + a `README.md` index. All 10 screenshots eyeballed against their captions (proof shots:
+Acme Corp in the list, SO-1001 = Shipped, the "cannot complete with open tasks" validation banner).
+Switched the Blazor EasyTest fixtures **Edge → Chrome** (`browser: "Chrome"`); `chromedriver.exe`
+149.0.7827 lives in `XafEasyTestAI/tools/webdriver/` (git-ignored — note: the **inner** subfolder, not
+repo root). To regenerate: `docker start xafeasy-sql`, build Blazor `-c EasyTest`, then the filter run.
+**Next:** nothing required — branch is ready to merge to `main` if desired.
+
 **Progress (all committed on `CreatingManual`):**
 - ✅ **Task 1** — `ManualRecorder` (E2E.Tests): pure markdown buffer, screenshot capture is an
   injected `Action<string>` (unit-testable, and the WinForms seam). 2 unit tests green. (`87d1c24`)
@@ -21,10 +31,10 @@ subagent-driven-development.
   `BlazorCapture` helper. Compiles in Debug. **Closed the one design risk:** `app.AsBlazor().WebDriver`
   → Selenium `IWebDriver`/`ITakesScreenshot` resolves (Selenium 4.4.0 + BlazorAdapter 25.2.5 are
   referenced unconditionally; `SaveAsFile(string)` works). (`2def2d2`)
-- ⏸️ **Task 3–4** — the 3 walkthroughs (CustomerManagement, MarkingOrdersShipped, CompletingProjects),
+- ✅ **Task 3–4** — the 3 walkthroughs (CustomerManagement, MarkingOrdersShipped, CompletingProjects),
   each `[Trait("kind","manual")]` so `dotnet test --filter "kind=manual"` runs them and normal/CI runs
-  skip them. **Not started — they need the live run.**
-- ⏸️ **Task 5** — `docs/manual/README.md` index + TODO/handoff updates.
+  skip them. Green + screenshots verified.
+- ✅ **Task 5** — `docs/manual/README.md` index + TODO/handoff updates.
 
 **To resume (the run is blocked on environment):**
 1. `docker start xafeasy-sql` (container exists but was Exited).
