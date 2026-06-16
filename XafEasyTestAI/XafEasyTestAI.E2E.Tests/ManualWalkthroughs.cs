@@ -71,5 +71,37 @@ namespace XafEasyTestAI.Module.E2E.Tests
             doc.Step("Click **Save**. The new customer now appears in the list.",
                 () => { app.GetAction("Save").Execute(); app.Navigate("Customer"); });
         }
+
+        [Trait("kind", "manual")]
+        [Fact]
+        public void MarkingOrdersShipped()
+        {
+            var app = StartSeededApp();
+            using var doc = new ManualRecorder(ManualDir, "orders.md",
+                "Shipping Orders", DateTime.Now.ToString("yyyy-MM-dd"), BlazorCapture(app));
+
+            doc.Note("When an order is ready to leave, mark it shipped from the Orders list.");
+            doc.Step("Open the **Orders** list.", () => app.Navigate("Order"));
+            doc.Step("Select the order you want to ship (here, **SO-1001**).",
+                () => app.GetGrid().SelectRows("Order Number", "SO-1001"));
+            doc.Step("Click **Mark Shipped**. The order's **Status** changes to *Shipped*.",
+                () => app.GetAction("Mark Shipped").Execute());
+        }
+
+        [Trait("kind", "manual")]
+        [Fact]
+        public void CompletingProjects()
+        {
+            var app = StartSeededApp();
+            using var doc = new ManualRecorder(ManualDir, "projects.md",
+                "Completing Projects", DateTime.Now.ToString("yyyy-MM-dd"), BlazorCapture(app));
+
+            doc.Note("A project can only be marked **Completed** once all of its tasks are done.");
+            doc.Step("Open the **Projects** list.", () => app.Navigate("Project"));
+            doc.Step("Open **Website Redesign**, which still has open tasks.",
+                () => app.GetGrid().ProcessRow(("Name", "Website Redesign")));
+            doc.Step("Set **Status** to *Completed* and click **Save** — the app blocks it and explains why.",
+                () => { app.GetForm().FillForm(("Status", "Completed")); app.GetAction("Save").Execute(); });
+        }
     }
 }
