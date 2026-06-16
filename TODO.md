@@ -11,10 +11,11 @@
       `Win/App.config`, and `E2E.Tests/Tests.cs`. It only unlocks the localhost Docker container, but
       should move to an env var / user-secrets before this is anything more than a POC.
 - [ ] **CI story.** WinForms EasyTest needs an interactive desktop session (not a headless agent);
-      Blazor can run `runHeadless: true` but still needs a version-matched `msedgedriver`. Document or
+      Blazor can run `runHeadless: true` but still needs a version-matched `chromedriver`. Document or
       script a self-hosted Windows runner approach.
-- [ ] **Pin/auto-resolve the Edge driver.** Today it's manually downloaded to `tools/webdriver/` and
-      breaks on Edge updates. Consider a build step that fetches the matching driver.
+- [ ] **Pin/auto-resolve the Chrome driver.** Today it's manually downloaded to `tools/webdriver/` and
+      breaks on Chrome updates. Consider a build step that fetches the matching driver (the
+      chrome-for-testing JSON one-liner in the webdriver README is a start).
 
 ## Tooling / reuse
 - [x] **WinForms manual variant.** Done — `ManualWalkthroughs.OrderWithLines` (`order-lines.md`).

@@ -42,7 +42,7 @@ These are wired up; listed so you can verify after a clean checkout or replicate
 | Test fixture | `XafEasyTestAI.E2E.Tests/Tests.cs` | `EasyTestFixtureContext`, app + DB registration |
 | **Blazor** auto-create+seed + conn switch | `Blazor.Server/BlazorApplication.cs`, `Startup.cs` | Same `#if EASYTEST` pattern as Win; reads `EasyTestConnectionString` from `appsettings.json` |
 | **Blazor** EasyTest adapter | `Blazor.Server.csproj` | `DevExpress.ExpressApp.EasyTest.BlazorAdapter` — referenced **only in the `EasyTest` config** |
-| **Blazor** browser driver | `XafEasyTestAI/tools/webdriver/msedgedriver.exe` | Version-matched to installed Edge; passed via `webDriverPath` in `BlazorApplicationOptions` |
+| **Blazor** browser driver | `XafEasyTestAI/tools/webdriver/chromedriver.exe` | Version-matched to installed Chrome; passed via `webDriverPath` + `browser: "Chrome"` in `BlazorApplicationOptions` |
 
 **Database:** tests use a dedicated catalog **`XafEasyTestAIEasyTest`** on the same SQL Server
 container the app uses (`xafeasy-sql`, `localhost,1433`, `sa` / `XafEasy!2026`). The fixture **drops
@@ -74,14 +74,11 @@ dotnet test ... --no-build --filter "DisplayName~Win"                        # o
 **Win:** not headless — opens the real app window; needs an **interactive Windows desktop session**.
 ~13s/test.
 
-**Blazor:** drives a real **Edge** browser via Selenium (`DevExpress.ExpressApp.EasyTest.BlazorAdapter`).
-~30s/test. The adapter does **not** auto-download the driver — `msedgedriver.exe` must match the installed
-Edge and be on PATH or pointed to by `webDriverPath`. Refresh it when Edge updates:
-```powershell
-# get Edge version, then download the matching driver into tools/webdriver
-(Get-Item 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe').VersionInfo.ProductVersion
-# Invoke-WebRequest "https://msedgedriver.microsoft.com/<version>/edgedriver_win64.zip" -OutFile edgedriver.zip
-```
+**Blazor:** drives a real **Chrome** browser via Selenium (`DevExpress.ExpressApp.EasyTest.BlazorAdapter`,
+`browser: "Chrome"` — the adapter defaults to Edge if unset). ~30s/test. The adapter does **not**
+auto-download the driver — `chromedriver.exe` must match the installed Chrome build and be on PATH or
+pointed to by `webDriverPath`. Refresh it when Chrome updates (see
+`XafEasyTestAI/tools/webdriver/README.md` for the full one-liner).
 A `BlazorApplicationOptions` can also set `runHeadless: true` for CI (a driver is still required).
 
 ---
@@ -230,8 +227,9 @@ over exact equality (messages can be prefixed/formatted by platform).
    away (clean on both once there are no unsaved changes). → see `CustomerCrud`.
 
 9. **Blazor driver isn't auto-managed.** The adapter throws `Browser driver is not found` unless
-   `msedgedriver.exe` (matching Edge) is on PATH or `webDriverPath`. Raw Selenium would auto-download;
-   the DevExpress adapter does not.
+   `chromedriver.exe` (matching the installed Chrome build) is on PATH or `webDriverPath`. Raw Selenium
+   would auto-download; the DevExpress adapter does not. **Gotcha:** `webDriverPath` resolves relative to
+   the test bin dir, so it lands in the **inner** `XafEasyTestAI/XafEasyTestAI/tools/webdriver`, not repo root.
 
 10. **Some flows are platform-specific.** Nested-grid in-place editing (`InlineNew`/`FillRow`) is the
     main one — Win uses a New Item Row; Blazor uses a different `InlineEditMode`/edit-form. `OrderWithLines`

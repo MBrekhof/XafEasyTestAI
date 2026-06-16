@@ -36,6 +36,20 @@ A standard **XAF 25.2 / .NET 8 / EF Core** scaffold (`XafEasyTestAI`) plus:
 
 \* nested-grid in-place editing differs on Blazor; see the playbook.
 
+## Bonus: a self-generating draft user manual
+
+The same EasyTest machinery that *verifies* the app can also *document* it. `E2E.Tests/ManualWalkthroughs.cs`
+drives the live app through real workflows and snaps a screenshot per step; the step captions are the
+first-draft prose. Output lands under [`docs/manual/`](docs/manual/) (one `.md` per scenario + `img/`).
+Screenshots come from EasyTest's cross-platform `GetScreen().GetScreenshot()`, so the **same walkthrough
+code captures Blazor and WinForms** — the Win-only `OrderWithLines` page is generated from the desktop host.
+
+```sh
+dotnet test ... --filter "kind=manual"   # regenerate the drafts (both hosts built -c EasyTest)
+```
+
+These walkthroughs carry no asserts — they're opt-in via the `kind=manual` trait and excluded from normal/CI runs.
+
 ## Prerequisites
 
 - .NET 8 SDK, Windows (WinForms host + EasyTest need an **interactive desktop session** — not headless).
@@ -45,7 +59,7 @@ A standard **XAF 25.2 / .NET 8 / EF Core** scaffold (`XafEasyTestAI`) plus:
   docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=XafEasy!2026" -p 1433:1433 \
     --name xafeasy-sql -d mcr.microsoft.com/mssql/server:2022-latest
   ```
-- **For Blazor tests:** Microsoft Edge + a matching `msedgedriver.exe` in `XafEasyTestAI/tools/webdriver/`
+- **For Blazor tests:** Google Chrome + a matching `chromedriver.exe` in `XafEasyTestAI/tools/webdriver/`
   (not committed — download per [that folder's README](XafEasyTestAI/tools/webdriver/README.md)).
 
 ## Build & run
@@ -62,7 +76,7 @@ dotnet test  XafEasyTestAI/XafEasyTestAI.E2E.Tests/XafEasyTestAI.E2E.Tests.cspro
 
 # Filter to one platform
 dotnet test ... --filter "DisplayName~Win"      # WinForms only
-dotnet test ... --filter "DisplayName~Blazor"   # Blazor only (needs Edge + driver)
+dotnet test ... --filter "DisplayName~Blazor"   # Blazor only (needs Chrome + driver)
 ```
 
 > The solution file (`XafEasyTestAI.slnx`) is at the repo root; the projects live under `XafEasyTestAI/`.
@@ -75,9 +89,10 @@ XafEasyTestAI/
   XafEasyTestAI.Module/                 # entities, controller, seed, DbContext  (shared)
   XafEasyTestAI.Blazor.Server/          # Blazor Server host
   XafEasyTestAI.Win/                    # WinForms host
-  XafEasyTestAI.E2E.Tests/              # EasyTest functional tests (xUnit)
-  tools/webdriver/                      # msedgedriver.exe goes here (gitignored, see folder README)
+  XafEasyTestAI.E2E.Tests/              # EasyTest functional tests + manual generator (xUnit)
+  tools/webdriver/                      # chromedriver.exe goes here (gitignored, see folder README)
 docs/EASYTEST-AUTHORING.md              # the authoring playbook
+docs/manual/                            # auto-generated draft user manual (see "Bonus" above)
 ```
 
 ## License
