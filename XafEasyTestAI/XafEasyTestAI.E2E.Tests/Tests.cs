@@ -30,7 +30,7 @@ namespace XafEasyTestAI.Module.E2E.Tests
             FixtureContext.RegisterApplications(
                 new BlazorApplicationOptions(BlazorAppName,
                     string.Format(@"{0}\..\..\..\..\XafEasyTestAI.Blazor.Server", Environment.CurrentDirectory),
-                    // msedgedriver.exe lives here (matched to the installed Edge); see docs/EASYTEST-AUTHORING.md.
+                    browser: "Chrome", // chromedriver.exe (matched to installed Chrome) lives here; see docs/EASYTEST-AUTHORING.md.
                     webDriverPath: string.Format(@"{0}\..\..\..\..\tools\webdriver", Environment.CurrentDirectory)),
                 new WinApplicationOptions(WinAppName, string.Format(@"{0}\..\..\..\..\XafEasyTestAI.Win\bin\EasyTest\net8.0-windows\XafEasyTestAI.Win.exe", Environment.CurrentDirectory))
             );
