@@ -24,6 +24,9 @@ their captions.
 **To regenerate:** `docker start xafeasy-sql`, build both hosts `-c EasyTest`, then
 `dotnet test --filter "kind=manual"`. **Next:** nothing required — feature is done.
 
+**Repo state at handoff:** `main` pushed at `815e035`. The merged feature branches `CreatingManual`
+and `winforms-manual` still exist locally (and `winforms-manual` on origin) — safe to delete whenever.
+
 - **Design:** `docs/plans/2026-06-16-easytest-manual-generator-design.md`
 - **Plan:** `docs/plans/2026-06-16-easytest-manual-generator.md` (5 tasks).
 
