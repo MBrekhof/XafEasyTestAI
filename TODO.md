@@ -17,8 +17,9 @@
       breaks on Edge updates. Consider a build step that fetches the matching driver.
 
 ## Tooling / reuse
-- [ ] **WinForms manual variant.** Swap `BlazorCapture` for a WinForms screen-capture lambda
-      (GDI/PrintWindow) at the seam in `ManualWalkthroughs.cs`; enables a Win `OrderWithLines` page.
+- [x] **WinForms manual variant.** Done — `ManualWalkthroughs.OrderWithLines` (`order-lines.md`).
+      No GDI/PrintWindow needed: EasyTest's `GetScreen().GetScreenshot()` is cross-platform, so the
+      seam collapsed to one `Capture(app)` serving both hosts (Blazor capture switched off Selenium).
 - [ ] **Extract a global `xaf-easytest-authoring` skill** for the generic, reusable payload — the
       EasyTest API cheat-sheet (§6) and gotchas (§7) plus the derive-from-source method (§4/§9). These
       are XAF-wide, not repo-specific, so they belong in the `xaf-*` skill family (same install/sync
