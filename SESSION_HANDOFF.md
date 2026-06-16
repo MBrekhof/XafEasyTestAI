@@ -1,8 +1,57 @@
 # Session Handoff
 
-_Last updated: 2026-06-14_
+_Last updated: 2026-06-16_
 
-## Last session (2026-06-14) — docs + skill extraction
+## Last session (2026-06-16) — EasyTest-driven manual generator (branch `CreatingManual`)
+
+**Idea:** use the EasyTests to generate a *draft user manual* — drive the live app through its real
+workflows and capture a screenshot per step. The walkthrough captions ARE the first-draft prose (no
+AI post-processing). Blazor first; WinForms later via a single capture seam.
+
+**Branch:** `CreatingManual` (NOT merged to main). Brainstormed → designed → planned → executing via
+subagent-driven-development.
+
+- **Design:** `docs/plans/2026-06-16-easytest-manual-generator-design.md`
+- **Plan:** `docs/plans/2026-06-16-easytest-manual-generator.md` (5 tasks).
+
+**✅ DONE this session (2026-06-16, all committed on `CreatingManual`):** Tasks 3–5 complete. The
+three walkthroughs (`CustomerManagement`, `MarkingOrdersShipped`, `CompletingProjects`) run green via
+`dotnet test --filter "kind=manual"` and emit `docs/manual/{customer-management,orders,projects}.md`
++ `img/*.png` + a `README.md` index. All 10 screenshots eyeballed against their captions (proof shots:
+Acme Corp in the list, SO-1001 = Shipped, the "cannot complete with open tasks" validation banner).
+Switched the Blazor EasyTest fixtures **Edge → Chrome** (`browser: "Chrome"`); `chromedriver.exe`
+149.0.7827 lives in `XafEasyTestAI/tools/webdriver/` (git-ignored — note: the **inner** subfolder, not
+repo root). To regenerate: `docker start xafeasy-sql`, build Blazor `-c EasyTest`, then the filter run.
+**Next:** nothing required — branch is ready to merge to `main` if desired.
+
+**Progress (all committed on `CreatingManual`):**
+- ✅ **Task 1** — `ManualRecorder` (E2E.Tests): pure markdown buffer, screenshot capture is an
+  injected `Action<string>` (unit-testable, and the WinForms seam). 2 unit tests green. (`87d1c24`)
+- ✅ **Task 2** — `ManualWalkthroughs.cs`: Blazor-only EasyTest fixture (mirrors `Tests.cs`) +
+  `BlazorCapture` helper. Compiles in Debug. **Closed the one design risk:** `app.AsBlazor().WebDriver`
+  → Selenium `IWebDriver`/`ITakesScreenshot` resolves (Selenium 4.4.0 + BlazorAdapter 25.2.5 are
+  referenced unconditionally; `SaveAsFile(string)` works). (`2def2d2`)
+- ✅ **Task 3–4** — the 3 walkthroughs (CustomerManagement, MarkingOrdersShipped, CompletingProjects),
+  each `[Trait("kind","manual")]` so `dotnet test --filter "kind=manual"` runs them and normal/CI runs
+  skip them. Green + screenshots verified.
+- ✅ **Task 5** — `docs/manual/README.md` index + TODO/handoff updates.
+
+**To resume (the run is blocked on environment):**
+1. `docker start xafeasy-sql` (container exists but was Exited).
+2. **Edge driver missing:** `tools/webdriver/` doesn't exist. Drop a `msedgedriver.exe` matching the
+   installed Edge **149.0.4022.62** there (git-ignored).
+3. Build Blazor `-c EasyTest`, then implement Task 3 (add `CustomerManagement`, run
+   `dotnet test --filter "FullyQualifiedName~CustomerManagement"`), **open the 4 PNGs +
+   `docs/manual/customer-management.md` and eyeball them** before committing.
+4. Task 4 adds the other two; Task 5 writes the index + updates docs.
+
+**Verification note for next session:** these walkthroughs have no asserts — a green run only proves
+the flow didn't throw. The real check is opening the generated screenshots and confirming each matches
+its caption (webapp-testing rule).
+
+---
+
+## Earlier session (2026-06-14) — docs + skill extraction
 
 - **Playbook (`docs/EASYTEST-AUTHORING.md`) de-staled:** dropped "WinForms-only / POC targets Win
   only" framing — both hosts are targeted and green (9 cases, 5 Win + 4 Blazor). Fixed "three
