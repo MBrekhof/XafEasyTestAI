@@ -16,6 +16,13 @@
 - [ ] **Pin/auto-resolve the Edge driver.** Today it's manually downloaded to `tools/webdriver/` and
       breaks on Edge updates. Consider a build step that fetches the matching driver.
 
+## Tooling / reuse
+- [ ] **Extract a global `xaf-easytest-authoring` skill** for the generic, reusable payload — the
+      EasyTest API cheat-sheet (§6) and gotchas (§7) plus the derive-from-source method (§4/§9). These
+      are XAF-wide, not repo-specific, so they belong in the `xaf-*` skill family (same install/sync
+      path as `xaf-efcore-entities` etc.), reusable across all XAF projects on both machines. Repo-
+      specific facts (entity names, seed rows, Docker/conn wiring) stay in `docs/EASYTEST-AUTHORING.md`.
+
 ## Nice to have
 - [ ] Wire the Win `EasyTestConnectionString` and Blazor `EasyTestConnectionString` to a single source.
 - [ ] Add a `docker compose` for the SQL container so setup is one command.
